@@ -1,5 +1,5 @@
 #displayblock {
-	width: 30%;
+	width: 20%;
 	border: solid black 2px;
 	background-color: pink;
 	height: 824px;
@@ -27,6 +27,7 @@
 .row {
 	display: flex;
 	justify-content: space-around;
+	height: 100px;
 }
 
 .col {
@@ -35,13 +36,43 @@
 	text-align: center;
 	vertical-align: middle;
 	padding: 0px;
-	
-
-.col-6 {
-	background-color: blue;
+	perspective: 1000;
 }
 
-.row {
-	height: 100px;
+.flipper, .front, .back {
+    width: 140px;
+    height: 190px;
 }
 
+.flipper {
+    transition: 1.0s;
+    transform-style: preserve-3d;
+    position: relative;
+    margin: 0px;
+}
+
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+    transform: rotateY(180deg);
+}
+
+.col.flipped .flipper {
+        transform: rotateY(180deg);
+    }
+
+
+/*http://jsfiddle.net/james2doyle/qsQun/

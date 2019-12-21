@@ -1,3 +1,12 @@
+/*
+Coming up with a stopper for the event listener
+Check Match should be in the timeout.
+Adding game-ending condition 
+3-Levels. 
+Game Modes?
+*/
+
+
 console.log("hello")
 
 var cards = [
@@ -243,6 +252,7 @@ function makeBoard(n) {
 		row.classList.add('row');
 			row.id = "row-"+i
 			row.style.width = "700px"
+			row.style.height = "190px"
 		//Within each row, create n col
 		for(let j = 0; j < n; j++){
 			var col = document.createElement('div');
@@ -252,6 +262,8 @@ function makeBoard(n) {
 
 			if(n < 5) {
 				col.innerHTML = "<div class=\"flipper\"><div class=\"front\"><img src=\"Cards/cardBack_red5.png\"></img></div><div class=\"back\"></div></div>"
+				col.style.height = "190px"
+				col.style.width = "140px"
 			} else {
 				col.innerHTML = "<img height = \"100\" src=\"Cards/cardBack_red5.png\"></img>"
 				col.style.height = "100px";
@@ -324,55 +336,90 @@ function createBoard() {
 
 
 createBoard();
+populateBackImages();
+
+//
+
+function populateBackImages(){
+	var allCol = document.querySelectorAll('.col');
+	for(let i = 0; i < allCol.length; i++){
+				
+		var currCol = allCol[i]
+		//Add flip card function too
+
+		//their id is actually the coordinates for the result board
+		var r = currCol.id.charAt(4);
+		var c = currCol.id.charAt(5);
+
+		var theId = resultBoard[r][c];
+
+		//Find the object which has theId as its id.
+		
+		var imgObj = cards.find(x => x.id === theId);
+
+		//This is to get the faceup image of the card
+
+		var imgLink = imgObj.link
+
+		var imgContainer = currCol.childNodes[0].childNodes[1];
+		var img = document.createElement('img')
+		img.setAttribute('src',imgLink);
+		imgContainer.appendChild(img)
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
 
 function addQS(){ 
 	var allCol = document.querySelectorAll('.col');
 
 	for(let i = 0; i < allCol.length; i++){
-			allCol[i].addEventListener('click',function(){
-				//Add flip card function too
+		allCol[i].addEventListener('click',function(){		
+			this.classList.toggle('flipped');
 
-				//their id is actually the coordinates for the result board
-				var r = this.id.charAt(4);
-				var c = this.id.charAt(5);
+			var r = this.id.charAt(4);
+			var c = this.id.charAt(5);
 
-				var theId = resultBoard[r][c];
+			var theId = resultBoard[r][c];
 
-				//Find the object which has theId as its id.
+			cardsInPlay.push(theId);
+
+			if(cardsInPlay.length == 2){
 				
-				var imgObj = cards.find(x => x.id === theId);
+				//* Clear block
+				//If match increase score count
 
-				//This is to get the faceup image of the card
+				if(cardsInPlay[0] == cardsInPlay[1]){
+					score++
+					clearCards(theId,r,c);
 
-				var imgLink = imgObj.link
-
-				var img = this.childNodes[0];
-				img.setAttribute('src',imgLink);
-
-				
-
-				cardsInPlay.push(theId);
-
-				if(cardsInPlay.length == 2){
-					
-					//* Clear block
-					//If match increase score count
-
-					if(cardsInPlay[0] == cardsInPlay[1]){
-						score++
-						clearCards(theId,r,c);
-					} else {
-						console.log("the r c "+r+" "+c)
-						console.log("fail");
-					}
-					var scoreDisplay = document.querySelector("#scoreDisplay");
-					scoreDisplay.innerText = "Score: "+score
-					
-					setTimeout(flipCardBack,600);
-					//Reset the cardsInPlay array so we can check the next 2 cards.
-					cardsInPlay.length = 0;
+				} else {
+					console.log("the r c "+r+" "+c)
+					console.log("fail");
 				}
-			})
+
+				var scoreDisplay = document.querySelector("#scoreDisplay");
+				scoreDisplay.innerText = "Score: "+score
+				
+				setTimeout(flipCardBack,1000);
+				//Reset the cardsInPlay array so we can check the next 2 cards.
+				cardsInPlay.length = 0;
+			}
+		})
 	}
 }
 
@@ -386,7 +433,11 @@ function flipCardBack() {
 			console.log("hey")
 			continue;
 		}
-		allCol[i].childNodes[0].src = "Cards/cardBack_red5.png"
+
+		if( allCol[i].classList.contains('flipped') === true ) {
+			allCol[i].classList.remove('flipped');
+		}
+
 	}
 }
 
