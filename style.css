@@ -1,0 +1,47 @@
+#displayblock {
+	width: 30%;
+	border: solid black 2px;
+	background-color: pink;
+	height: 824px;
+}
+
+#mainBoard {
+	padding: 0px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.mainblock {
+	float: left;
+}
+
+
+.container {
+	background-color:  rgb(10, 108, 3);
+	width: 70%;
+	height: 824px;
+}
+
+.row {
+	display: flex;
+	justify-content: space-around;
+}
+
+.col {
+	/*border: solid black 2px;*//*To check grid in board*/
+	height: 200px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 0px;
+	
+
+.col-6 {
+	background-color: blue;
+}
+
+.row {
+	height: 100px;
+}
+
