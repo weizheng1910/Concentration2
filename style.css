@@ -1,8 +1,17 @@
 #displayblock {
 	width: 20%;
-	border: solid black 2px;
-	background-color: pink;
+	background-color: rgb(10, 108, 3);
 	height: 824px;
+	color: white;
+	font-family: helvetica;
+}
+
+h1 {
+	font-size: 20px;
+}
+
+h1, h2{
+	padding: 8px;
 }
 
 #mainBoard {
@@ -73,6 +82,17 @@
 .col.flipped .flipper {
         transform: rotateY(180deg);
     }
+
+#gameOver, #youLose {
+	font-size: 40px;
+	position: absolute;
+	top: 250px;
+	left: auto;
+	color: white;
+	font-family: helvetica;
+}
+
+
 
 
 /*http://jsfiddle.net/james2doyle/qsQun/

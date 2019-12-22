@@ -1,9 +1,16 @@
 /*
-Coming up with a stopper for the event listener
-Check Match should be in the timeout.
-Adding game-ending condition 
-3-Levels. 
-Game Modes?
+TO DO LIST: 
+
+Coming up with a stopper for the event listener DONE
+Check Match should be in the timeout. DONE
+Adding game-ending condition DONE
+3-Levels. DONE 2 Levels
+Game over image, and Restart game state in 5 seconds. DONE
+
+
+To add in Refresher Timer. DONE
+Prevent clicking on the same card. DONE
+
 */
 
 
@@ -220,13 +227,25 @@ var cards = [
 	}
 ]
 
-//The size of the board
-var n = 4;
+var mySound = new sound("ding.mp3");
 
 var boardCards = [];
 
 var score = 0;
-var time = 5; 
+var time = 300;
+
+var stage = 1;
+
+var hasGameStarted = false;
+  
+
+var matchesToWin;
+
+//Declared this timerInterval as a global variable so that we can use it in different functions.
+var timerInterval;
+
+//Countdown to new Game
+var refreshCount = 5;
 
 
 var shuffledCards;
@@ -252,7 +271,12 @@ function makeBoard(n) {
 		row.classList.add('row');
 			row.id = "row-"+i
 			row.style.width = "700px"
-			row.style.height = "190px"
+			if (n > 5){
+				row.style.height = "110px"
+			} else {
+				row.style.height = "190px";
+			}
+			
 		//Within each row, create n col
 		for(let j = 0; j < n; j++){
 			var col = document.createElement('div');
@@ -265,68 +289,91 @@ function makeBoard(n) {
 				col.style.height = "190px"
 				col.style.width = "140px"
 			} else {
-				col.innerHTML = "<img height = \"100\" src=\"Cards/cardBack_red5.png\"></img>"
+				col.innerHTML = "<div class=\"flipper\"><div class=\"front\"><img height = \"100\" src=\"Cards/cardBack_red5.png\"></img></div><div class=\"back\"></div></div>"
 				col.style.height = "100px";
 				col.style.width = "73.68px"
-			}
+				}
+			
+
+			
 			
 			row.appendChild(col);
 		}
 		mainBoard.appendChild(row);
 	}
 	document.body.appendChild(mainBoard);
+
+	//Readjusts DOM sizes when number of squares is greater than 5
+	if (n > 5) {
+		var allFlipperDiv = document.querySelectorAll(".flipper")
+		var allFrontDiv = document.querySelectorAll(".front")
+		var allBackDiv = document.querySelectorAll(".back")
+
+		for(let i = 0; i < allFlipperDiv.length; i++){
+			
+			allFlipperDiv[i].style.height = "100px"
+			allFlipperDiv[i].style.width = "73.68px"
+
+			allFrontDiv[i].style.height = "100px"
+			allFrontDiv[i].style.width = "73.68px"
+
+			allBackDiv[i].style.height = "100px"
+			allBackDiv[i].style.width = "73.68px"
+		}
+	}
 };
 
 
-
-
-makeBoard(n);
-addQS();
-
-
-/*
-Splitting an array to get an array you want 
-
-var a = YOUR_ARRAY;
-while(a.length) {
-    console.log(a.splice(0,10));
+function generateFullBoard(n){
+	//Generate the HTML DOMs for the board
+	makeBoard(n);
+	//Add query selectors
+	addQS();
+	//Shuffle cards
+	cards = shuffle(cards);
+	// Choose the matching pairs
+	pushBoard(n);
+	// Shuffle their position
+	boardCards = shuffle(boardCards);
+	// Make the board an n*n array 
+	createBoard(n);
+	// Add in images of card when it is flipped over
+	populateBackImages(n);
+	//Define number of matches to win
+	matchesToWin = (Math.pow(n,2)/2)
 }
-*/
 
+//Board generated from the start
+generateFullBoard(4)
+
+
+//Returns an array shuffled
 function shuffle(array) {
-	var shuffledCards = [], n = array.length, i;
+	var shuffledArray = [], n = array.length, i;
 	while (n) {
 		//Randomly choses an integer between 0 to the number of cards remaining
 		i = Math.floor(Math.random()*array.length)
 		//So long the randomised i has not been deleted
 		if (i in array) {
-		shuffledCards.push(array[i]);
+		shuffledArray.push(array[i]);
 		delete array[i];
 		 n --;
 		}
 	}
 	//cards array are reshuffled
-	return shuffledCards;
+	return shuffledArray;
 }
 
 
-cards = shuffle(cards);
-
-function pushBoard() {
+function pushBoard(n) {
 	for(let i = 0; i < (Math.pow(n,2)/2) ; i++){
-		//Push two of the same cards so it matches
+		//Pushes a matching pair of cards
 		boardCards.push(cards[i].id);
 		boardCards.push(cards[i].id);
 	}
 };
 
-pushBoard();
-
-boardCards = shuffle(boardCards);
-
-//permutate
-
-function createBoard() { 
+function createBoard(n) { 
 	while(boardCards.length) {
 	    resultBoard.push(boardCards.splice(0,n))
 	}
@@ -335,26 +382,20 @@ function createBoard() {
 
 
 
-createBoard();
-populateBackImages();
-
-//
-
-function populateBackImages(){
+function populateBackImages(n){
 	var allCol = document.querySelectorAll('.col');
 	for(let i = 0; i < allCol.length; i++){
 				
 		var currCol = allCol[i]
-		//Add flip card function too
 
-		//their id is actually the coordinates for the result board
+		//Each "col" has an id which describes its position in the resultBoard array
+		//col-00 means resultBoard[0][0]
 		var r = currCol.id.charAt(4);
 		var c = currCol.id.charAt(5);
 
 		var theId = resultBoard[r][c];
 
 		//Find the object which has theId as its id.
-		
 		var imgObj = cards.find(x => x.id === theId);
 
 		//This is to get the faceup image of the card
@@ -364,61 +405,62 @@ function populateBackImages(){
 		var imgContainer = currCol.childNodes[0].childNodes[1];
 		var img = document.createElement('img')
 		img.setAttribute('src',imgLink);
+
+		if(n>5){
+			img.setAttribute('height',"100px");
+			img.setAttribute('width',"73.68px");	
+		}
 		imgContainer.appendChild(img)
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-
-function addQS(){ 
+// Event listener. What happens upon clicking.
+function addQS() { 
 	var allCol = document.querySelectorAll('.col');
 
 	for(let i = 0; i < allCol.length; i++){
 		allCol[i].addEventListener('click',function(){		
+		console.log("click")
+		
+
+		//Once you click, the timer starts
+		if(hasGameStarted == false){
+			timer();
+			hasGameStarted = true;
+		} 
+
+		
+		var r = this.id.charAt(4);
+		var c = this.id.charAt(5);
+
+		var theId = resultBoard[r][c];
+
+		cardsInPlay.push({
+			iden: theId,
+			locationid: r+c
+		});
+
+		console.log(cardsInPlay)
+
+		//The below code is to prevent the bug of being able to flip the same card over and over again.
+		if(cardsInPlay.length == 2 && cardsInPlay[0].locationid == cardsInPlay[1].locationid){
+			var deletedCard = cardsInPlay.pop();
+			console.log(deletedCard)
+			console.log(cardsInPlay)
+			return;
+		} else if(cardsInPlay.length >= 2){
+			//After two seconds, check if there is a match a respond accordingly. 
+			// ">=" is used so that the code continues to run even if there are accidental clicks
+			setTimeout(checkResult,2000,theId,r,c);	
+		}
+
+		//Prevents the third card from getting flipped over.
+		if(cardsInPlay.length < 3) {
 			this.classList.toggle('flipped');
+		}
 
-			var r = this.id.charAt(4);
-			var c = this.id.charAt(5);
-
-			var theId = resultBoard[r][c];
-
-			cardsInPlay.push(theId);
-
-			if(cardsInPlay.length == 2){
-				
-				//* Clear block
-				//If match increase score count
-
-				if(cardsInPlay[0] == cardsInPlay[1]){
-					score++
-					clearCards(theId,r,c);
-
-				} else {
-					console.log("the r c "+r+" "+c)
-					console.log("fail");
-				}
-
-				var scoreDisplay = document.querySelector("#scoreDisplay");
-				scoreDisplay.innerText = "Score: "+score
-				
-				setTimeout(flipCardBack,1000);
-				//Reset the cardsInPlay array so we can check the next 2 cards.
-				cardsInPlay.length = 0;
-			}
+		
+		
 		})
 	}
 }
@@ -442,6 +484,94 @@ function flipCardBack() {
 }
 
 
+function checkResult(theId,r,c) {
+	//This code prevents a bug where the computer reads a match when you click at the same card twice.
+	if(cardsInPlay[0].iden == cardsInPlay[1].iden && cardsInPlay[0].locationid != cardsInPlay[1].locationid){
+		score++
+		clearCards(theId,r,c);
+
+		//Check if the game has ended.
+		if(score >= matchesToWin){
+			if (stage == 1){
+				var mainBoard = document.querySelector('#mainBoard');
+				mainBoard.parentNode.removeChild(mainBoard);
+				resultBoard = [];
+				score = 0;
+				time = 300;
+				generateFullBoard(6);
+				stage++
+
+			} else if(stage == 2) {
+
+				//Display game over 
+				var mainBoard = document.querySelector('#mainBoard');
+				mainBoard.innerHTML = "";
+
+				var displayGameOver = document.createElement("p");
+				displayGameOver.id = "gameOver";
+				displayGameOver.innerText = "Game Over !\n You Win !";
+				mainBoard.appendChild(displayGameOver);
+				
+				//Stop in-game timer
+				clearInterval(timerInterval)
+				
+				//New Game starts after 5 seconds.
+				var refreshInterval = setInterval( function(){
+					refreshCount--
+					var displayGameOver = document.querySelector("#gameOver")
+					displayGameOver.innerText = "Game Over !\n You Win !\n Restarting in : "+refreshCount;
+				}, 1000)
+
+
+				setTimeout(function(){ 
+					//Stop the countdown when game restarts.
+					clearInterval(refreshInterval);
+
+					//Reset all game variables
+					refreshCount = 5;
+					resultBoard = [];
+					score = 0;
+					time = 300;
+					stage = 1;
+					
+					//Remove mainBoard to make space when board is regenerated.
+					var mainBoard = document.querySelector('#mainBoard');
+					mainBoard.parentNode.removeChild(mainBoard);
+
+					//Redisplay time
+					var timerDisplay = document.querySelector("#timerDisplay");
+					timerDisplay.innerText = "Timer : "+time
+
+					//Redisplay score
+					var scoreDisplay = document.querySelector("#scoreDisplay");
+					scoreDisplay.innerText = "Score: "+score
+
+					//Reset counter so timer can run again
+					hasGameStarted = false;
+
+					//Regenerate 4*4 board
+					generateFullBoard(4);
+
+				},5000)
+
+			}
+		}
+
+	} else {
+		flipCardBack();
+	}
+
+	var scoreDisplay = document.querySelector("#scoreDisplay");
+	scoreDisplay.innerText = "Score: "+score
+	
+	
+	//Reset the cardsInPlay array so we can check the next 2 cards.
+	cardsInPlay.length = 0;
+	
+
+}
+
+
 
 
 
@@ -451,21 +581,82 @@ function timer() {
 	var timerDisplay = document.querySelector("#timerDisplay");
 	timerDisplay.innerText = "Timer : "+time
 
-	var timerInterval = setInterval(function(){ 
+	//Countdown function
+	timerInterval = setInterval(function(){ 
 		time--
 		timerDisplay.innerText = "Timer : "+time
 		
 	}, 1000);
 
+	//Terminates game timer when it reaches zero
 	setTimeout(function() {
-		
+		//Stops timer
 		clearInterval(timerInterval)
-		console.log("done")
+		//Game ending condition
+	loop1:
+		for(let i = 0; resultBoard.length; i++) {
+		loop2:
+			for(let j = 0; resultBoard.length; j++) {
+				if(isNaN(resultBoard[i][j]) == false){
+					console.log(i,j)
+					//Destroy mainboard
+					var mainBoard = document.querySelector('#mainBoard');
+					mainBoard.innerHTML = "";
+
+					var youLose = document.createElement('p');
+					youLose.id = "youLose"
+					youLose.innerText = "YOU LOSE"
+
+					mainBoard.appendChild(youLose)
+					break loop1;
+				}
+			}
+		}
+
+		console.log("IM HERE")
+		//Need to start the refresh
+		var refreshInterval = setInterval( function(){
+			refreshCount--
+			var youLose = document.querySelector("#youLose")
+			youLose.innerText = "YOU LOSE \n Restarting in : "+refreshCount;
+		}, 1000)
+
+		//Restart game after 5 seconds 
+
+		setTimeout(function(){ 
+						//Stop the countdown when game restarts.
+						clearInterval(refreshInterval);
+
+						//Reset all game variables
+						refreshCount = 5
+						resultBoard = [];
+						score = 0;
+						time = 300;
+						stage = 1;
+						
+						//Remove mainBoard to make space when board is regenerated.
+						var mainBoard = document.querySelector('#mainBoard');
+						mainBoard.parentNode.removeChild(mainBoard);
+
+						//Redisplay time
+						var timerDisplay = document.querySelector("#timerDisplay");
+						timerDisplay.innerText = "Timer : "+time
+
+						//Redisplay score
+						var scoreDisplay = document.querySelector("#scoreDisplay");
+						scoreDisplay.innerText = "Score: "+score
+
+						//Reset counter so timer can run again
+						hasGameStarted = false;
+
+						//Regenerate 4*4 board
+						generateFullBoard(4);
+
+					},5000)
+
 	}, (time*1000));
 
-	//do a set timeOut
 }
-
 
 function clearCards(theId,r,c) {
 	//Find the cards[].id of the card clicked.
@@ -496,8 +687,8 @@ function clearCards(theId,r,c) {
 	console.log(secondCardToRemove);
 	firstCardToRemove.removeChild(firstCardToRemove.childNodes[0]);
 	secondCardToRemove.removeChild(secondCardToRemove.childNodes[0]);
+	mySound.play();
 
-	
 	delete resultBoard[rowOfMatchingID][colOfMatchingID]
 }
 
@@ -505,15 +696,18 @@ function clearCards(theId,r,c) {
 
 	//Remove the img of both card with the same id.
 
-
-
-
-
-
-
-
-
-
-var x = [[1,2,3],[1,2,3],[1,2,3]]
-var y = JSON.parse(JSON.stringify(x))
-delete x[0][0]
+//Sound effects
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
