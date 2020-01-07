@@ -326,7 +326,7 @@ var cards = [
 
 // Self-explanatory
 var ding = new sound("ding.mp3");
-var flip = new sound("flip.wav");
+var flip = new sound("flip.mp3");
 
 // A temporary array which stores the selected matching pairs
 // before transferring them into the actual JS Board
@@ -663,6 +663,10 @@ function checkResult(theId,r,c) {
 				
 				stage++
 				generateFullBoard(6);
+
+				//Display Timer with correct time
+				var timerDisplay = document.querySelector("#timerDisplay");
+				timerDisplay.innerText = "Timer : "+time
 
 			} else if(stage == 2) {
 
