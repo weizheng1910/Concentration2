@@ -1,7 +1,14 @@
 
-var cardFlipSpeed = 900;
-var waitTime = 600;
+var stage1Timer = 60;
+var stage2Timer = 90;
+
+// Lag time before card is flipped back 
+var waitTime = 550;
+
+// An array of object which have 
 var pastScores = [];
+
+// An array of cards
 var cards = [
 	{
 	id: 0,
@@ -317,22 +324,28 @@ var cards = [
 	}
 ]
 
+// Self-explanatory
 var ding = new sound("ding.mp3");
 var flip = new sound("flip.wav");
 
-// 
-var boardCards = [];
+// A temporary array which stores the selected matching pairs
+// before transferring them into the actual JS Board
+var tempArray = [];
 
+// Global variable which keeps track of the score 
 var score = 0;
+
+// Global variable which keeps track of the time
 var time;
 
-//Check the stage of the game
+// Global variable which keeps track of the stage
 var stage;
 
-//Check if game has started, so that we only call the number once
+// Check if game has started, so that we only call 
+// the timer function once
 var hasGameStarted = false;
   
-//Variable to store the number of matches needed to win 
+// Variable to store the number of matches needed to win 
 var matchesToWin;
 
 //Declared this timerInterval as a global variable so that we can use it in different functions.
@@ -341,13 +354,15 @@ var timerInterval;
 //Countdown to new Game
 var refreshCount = 5;
 
-var shuffledCards;
+// var shuffledCards;
 
-// resultBoard is the board in which the check for match will be done. 
-var resultBoard = [];
+// JSBoard is the board in which the check for match will be done. 
+var JSBoard = [];
 
+// An array to store the chosen cards to see if they match 
 var cardsInPlay = [];
 
+// Global variable to keep track if the player wins or loses
 var winOrLose = "Lose"
 
 
@@ -368,10 +383,10 @@ function sound(src) {
   }
 }
 
-function makeBoard(n) {
+function createDomElements(n) {
 	//Make a main div to contain the board first
 	var mainBoard = document.createElement('div');
-	//Because we are using Bootstrap, we will use container class.
+	
 	mainBoard.classList.add('mainblock')
 	mainBoard.classList.add('container');
 	mainBoard.id = "mainBoard";
@@ -391,7 +406,6 @@ function makeBoard(n) {
 		for(let j = 0; j < n; j++){
 			var col = document.createElement('div');
 			col.classList.add('col');
-			col.classList.add('col-'+(12/(n+1)));
 			col.id = "col-"+i+j;
 
 			if(n < 5) {
@@ -432,9 +446,9 @@ function makeBoard(n) {
 
 function setTime(){
 	if (stage == 1){
-		time = 90;
+		time = stage1Timer;
 	} else if(stage == 2){
-		time = 270;
+		time = stage2Timer;
 	}
 }
 
@@ -446,21 +460,21 @@ function setMatchesToWin(){
 	}
 }
 
-function generateFullBoard(n){// CHANGE N TO ROWS
+function generateFullBoard(n){
 	// Clear JavaScript Board
-	resultBoard = [];
-	//Generate the HTML DOMs for the board
-	makeBoard(n);
-	//Add query selectors
+	JSBoard = [];
+	// Generate the HTML DOMs for the board
+	createDomElements(n);
+	// Add query selectors
 	addEventListener();
-	//Shuffle cards
+	// Shuffle cards
 	cards = shuffle(cards);
 	// Choose the matching pairs
-	pushBoard(n);
+	transferStepOne(n);
 	// Shuffle their position
-	boardCards = shuffle(boardCards);
+	tempArray = shuffle(tempArray);
 	// Make the board an n*n array 
-	createBoard(n);
+	transferStepTwo(n);
 	// Add in images of card when it is flipped over
 	populateBackImages(n);
 	// Define number of matches to win
@@ -471,6 +485,8 @@ function generateFullBoard(n){// CHANGE N TO ROWS
 	hasGameStarted = false;		
 }
 
+
+// Object which tracks the game state
 const gameState = {
 	current: 0,
 	inGame: 0,
@@ -482,7 +498,10 @@ function changeState(){
 	switch(gameState.current){
 		case(0):
 			//Reset Global Variables
-			score = 0
+			score = 0;
+			var scoreDisplay = document.querySelector("#scoreDisplay");
+			scoreDisplay.innerText = "Score: "+score
+
 			stage = 1;
 			generateFullBoard(4);
 			
@@ -520,19 +539,19 @@ function shuffle(array) {
 	return shuffledArray;
 }
 
-function pushBoard(n) {
+function transferStepOne(n) {
 	for(let i = 0; i < (Math.pow(n,2)/2) ; i++){
 		//Pushes a matching pair of cards
-		boardCards.push(cards[i].id);
-		boardCards.push(cards[i].id);
+		tempArray.push(cards[i].id);
+		tempArray.push(cards[i].id);
 	}
 };
 
-function createBoard(n) { 
-	while(boardCards.length) {
-	    resultBoard.push(boardCards.splice(0,n))
+function transferStepTwo(n) { 
+	while(tempArray.length) {
+	    JSBoard.push(tempArray.splice(0,n))
 	}
-	console.log(resultBoard)
+	console.log(JSBoard)
 }
 
 function populateBackImages(n){
@@ -541,12 +560,12 @@ function populateBackImages(n){
 				
 		var currCol = allCol[i]
 
-		//Each "col" has an id which describes its position in the resultBoard array
-		//col-00 means resultBoard[0][0]
+		//Each "col" has an id which describes its position in the JSBoard array
+		//col-00 means JSBoard[0][0]
 		var r = currCol.id.charAt(4);
 		var c = currCol.id.charAt(5);
 
-		var theId = resultBoard[r][c];
+		var theId = JSBoard[r][c];
 
 		//Find the object which has theId as its id.
 		var imgObj = cards.find(x => x.id === theId);
@@ -583,7 +602,7 @@ function addEventListener() {
 			var r = this.id.charAt(4);
 			var c = this.id.charAt(5);
 
-			var theId = resultBoard[r][c];
+			var theId = JSBoard[r][c];
 
 			cardsInPlay.push({
 				iden: theId,
@@ -627,34 +646,6 @@ function flipCardBack() {
 	}
 }
 
-function clearCards(theId,r,c) {
-	//Find the cards[].id of the card clicked.
-	
-	var rowOfMatchingID;
-	var colOfMatchingID;
-
-	//We need to keep track of the card
-	var thisID = theId
-	delete resultBoard[r][c];
-	
-	for(let i = 0; i < resultBoard.length; i++){
-		if(resultBoard[i].indexOf(thisID) >= 0) {
-			rowOfMatchingID = i;
-			colOfMatchingID = resultBoard[i].indexOf(thisID);
-			break;
-		}
-	}
-
-	var firstCardToRemove = document.querySelector('#col-'+r+c);
-	var secondCardToRemove = document.querySelector('#col-'+rowOfMatchingID+colOfMatchingID);
-	
-	firstCardToRemove.removeChild(firstCardToRemove.childNodes[0]);
-	secondCardToRemove.removeChild(secondCardToRemove.childNodes[0]);
-	ding.play();
-
-	delete resultBoard[rowOfMatchingID][colOfMatchingID]
-}
-
 function checkResult(theId,r,c) {
 	//This code prevents a bug where the computer reads a match when you click at the same card twice.
 	if(cardsInPlay[0].iden == cardsInPlay[1].iden){
@@ -663,17 +654,19 @@ function checkResult(theId,r,c) {
 
 		//Check if the game has ended.
 		if(score >= matchesToWin){
+
+				timer(); //stops the timer
+
 			if (stage == 1){
 				var mainBoard = document.querySelector('#mainBoard');
 				mainBoard.parentNode.removeChild(mainBoard);
-				timer();
+				
 				stage++
 				generateFullBoard(6);
 
 			} else if(stage == 2) {
 
 				winOrLose = "Win";
-				timer();
 				gameState.current = gameState.endGame;
 				changeState();
 
@@ -691,16 +684,46 @@ function checkResult(theId,r,c) {
 	cardsInPlay.length = 0;
 }
 
+function clearCards(theId,r,c) {
+	
+	// The arguments: theId, r and c are the uniqueID, rowID and colID of
+	// the first card respectively.
+	// Thi 
+	var rowOfMatchingID;
+	var colOfMatchingID;
+
+	// We need to keep track of the card
+	var thisID = theId
+	delete JSBoard[r][c];
+	
+	for(let i = 0; i < JSBoard.length; i++){
+		if(JSBoard[i].indexOf(thisID) >= 0) {
+			rowOfMatchingID = i;
+			colOfMatchingID = JSBoard[i].indexOf(thisID);
+			break;
+		}
+	}
+
+	var firstCardToRemove = document.querySelector('#col-'+r+c);
+	var secondCardToRemove = document.querySelector('#col-'+rowOfMatchingID+colOfMatchingID);
+	
+	firstCardToRemove.removeChild(firstCardToRemove.childNodes[0]);
+	secondCardToRemove.removeChild(secondCardToRemove.childNodes[0]);
+	ding.play();
+
+	delete JSBoard[rowOfMatchingID][colOfMatchingID]
+}
+
 function showGameOverScreen(){
 	var mainBoard = document.querySelector('#mainBoard');
 	mainBoard.innerHTML = "";
 
 	var gameStatement = document.createElement('p');
 	gameStatement.id = "gameStatement"
-	gameStatement.innerText = "You "+winOrLose+". Your score is "+score+"\n Enter your name below to submit your score."
+	gameStatement.innerText = "You "+winOrLose+".\n Your score is "+score+"\n Enter your name below to submit your score."
 	mainBoard.appendChild(gameStatement)
 
-	//Create Input
+	
 	var nameInput = document.createElement('input');
 	nameInput.id = "nameInput"
 	nameInput.setAttribute("type", "text");
@@ -725,6 +748,7 @@ function showGameOverScreen(){
 }
 
 var timerStat = "off";
+// Declared the timeout function as a global variable so we can call it outside
 var timeoutFunction;
 
 function timer() {
@@ -737,7 +761,7 @@ function timer() {
 		timerStat = "off"
 	}
 
-	// What happens if it is off, what happens if its on.
+	// The code which would run depending on the timerStat variable
 	if(timerStat == "off"){
 		clearInterval(timerInterval);
 		clearTimeout(timeoutFunction);
@@ -745,13 +769,13 @@ function timer() {
 		var timerDisplay = document.querySelector("#timerDisplay");
 		timerDisplay.innerText = "Timer : "+time
 
-		//Countdown function
+		// Interval function which counts down the time
 		timerInterval = setInterval(function(){ 
 			time--
 			timerDisplay.innerText = "Timer : "+time	
 		}, 1000);
 
-		//Terminates game timer when it reaches zero
+		// Terminates game timer when it reaches zero
 		timeoutFunction = setTimeout(function() {
 		// This below is required so that when timer() calls again
 		// It starts the timer rather than stops it.
@@ -762,8 +786,6 @@ function timer() {
 		}, (time*1000));
 	}
 }
-
-		
 
 //This call starts the whole game :)
 changeState();

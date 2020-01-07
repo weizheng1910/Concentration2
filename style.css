@@ -1,9 +1,14 @@
+body {
+	background: radial-gradient(circle, rgba(0,160,0,1) 26%, rgba(11,52,8,1) 78%);
+}
+
+
 #displayblock {
 	width: 20%;
-	background-color: rgb(10, 108, 3);
+	
 	height: 824px;
 	color: white;
-	font-family: helvetica;
+	font-family: 'Roboto', sans-serif;
 }
 
 h1 {
@@ -28,7 +33,7 @@ h1, h2{
 
 
 .container {
-	background-color:  rgb(10, 108, 3);
+	
 	width: 70%;
 	height: 824px;
 }
@@ -54,7 +59,7 @@ h1, h2{
 }
 
 .flipper {
-    transition: 0.7s;
+    transition: 0.5s;
     transform-style: preserve-3d;
     position: relative;
     margin: 0px;
@@ -89,7 +94,16 @@ h1, h2{
 	top: 250px;
 	left: auto;
 	color: white;
-	font-family: helvetica;
+	font-family: 'Roboto', sans-serif;
+}
+
+#gameStatement {
+	font-size: 20px;
+	text-align: center;
+}
+
+#mainHeader {
+	font-size: 32px;	
 }
 
 
