@@ -54,7 +54,7 @@ h1, h2{
 }
 
 .flipper {
-    transition: 1.0s;
+    transition: 0.7s;
     transform-style: preserve-3d;
     position: relative;
     margin: 0px;
@@ -83,7 +83,7 @@ h1, h2{
         transform: rotateY(180deg);
     }
 
-#gameOver, #youLose {
+#gameOver, #gameStatement {
 	font-size: 40px;
 	position: absolute;
 	top: 250px;
