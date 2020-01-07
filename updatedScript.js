@@ -1,17 +1,4 @@
-/*
-TO DO LIST: 
 
-Coming up with a stopper for the event listener DONE
-Check Match should be in the timeout. DONE
-Adding game-ending condition DONE
-3-Levels. DONE 2 Levels
-Game over image, and Restart game state in 5 seconds. DONE
-
-
-To add in Refresher Timer. DONE
-Prevent clicking on the same card. DONE
-
-*/
 var cardFlipSpeed = 900;
 var waitTime = 600;
 var pastScores = [];
@@ -363,7 +350,7 @@ var cardsInPlay = [];
 
 var winOrLose = "Lose"
 
-//Create a board which makes n * n squares
+
 
 //Sound effects
 function sound(src) {
@@ -447,7 +434,7 @@ function setTime(){
 	if (stage == 1){
 		time = 90;
 	} else if(stage == 2){
-		time = 3;
+		time = 270;
 	}
 }
 
@@ -481,9 +468,7 @@ function generateFullBoard(n){// CHANGE N TO ROWS
 	// Set the time;
 	setTime();
 	// So that timer function will only be called on the first click
-	hasGameStarted = false;
-
-		
+	hasGameStarted = false;		
 }
 
 const gameState = {
@@ -491,7 +476,6 @@ const gameState = {
 	inGame: 0,
 	endGame: 1
 }
-
 
 //Board generated from the start
 function changeState(){
