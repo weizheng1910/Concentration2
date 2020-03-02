@@ -22,5 +22,5 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 6. Coming up with logic which prevents the player from gaming the system. /n
    i.e. A match resulting simply from double-clicking, flipping more than 2 cards, 
 7. Adding sounds.
-
+ 
 
