@@ -27,6 +27,5 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 
 1. Modularisation. Abstracting out variables frequently used. i.e. timer and lagtime so that the variables are applied at all the correct places after changing the variable at just one place.
 2. Using an object and switch statement to maintain game state. I learnt this from a Youtube Tutorial on Flappy Bird which also tracks the game state using a similar method.
-3. Importance of user feedback. 
- 
+
 
