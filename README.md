@@ -19,8 +19,8 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 3. Writing the loop which populates the images on a 4 * 4 or 6 * 6 grid.
 4. Learning the flip animation from Google.
 5. Coming up with match condition.
-6. Coming up with logic which prevents the player from gaming the system. /n
+6. Coming up with logic which prevents the player from gaming the system.
    i.e. A match resulting simply from double-clicking, flipping more than 2 cards, 
-7. Adding sounds.
+7. Adding sounds and colours.
  
 
