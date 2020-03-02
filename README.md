@@ -15,4 +15,8 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
     rank:
     img_link:
   }
-3. 
+3. Writing the loop which populates the images on a 4 * 4 or 6 * 6 grid.
+4. Learning the flip animation from Google.
+5. Coming up with match condition
+
+
