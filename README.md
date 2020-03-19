@@ -1,5 +1,7 @@
 # Concentration
 
+[Link to App](https://weizheng1910.github.io/Concentration/)
+
 ## Technologies
 CSS, Javascript
 
