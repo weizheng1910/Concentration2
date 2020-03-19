@@ -31,8 +31,25 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 
 ## Things I have learnt 
 
-1. Modularisation. Abstracting out variables frequently used. i.e. timer and lagtime so that the variables are applied at all the correct places after changing the variable at just one place.
+1. Modularisation. Abstracting out variables frequently used.
+  * Timer and lagtime are made global variables so that changes can be easily implemented to multiple parts of the code.
+``` javascript
 
+var stage1Timer = 3;
+var stage2Timer = 3;
+
+// Lag time before card is flipped back 
+var waitTime = 550;
+
+```
+
+
+
+
+
+
+
+* Abstracting out blocks of code to their individual functions adheres to the Single Responsibility Principle. This makes each function easier to test and troubleshoot.
 
 ``` javascript
 function generateFullBoard(n){
