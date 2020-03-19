@@ -133,3 +133,10 @@ function changeState(){
 ```
 
 #### HTML DOM Manipulation
+The cards are Document Object Models - they are created and removed by a function call. </br>
+Every card has an id which represents its position in the backend Javascript board, which is an array of arrays. </br>
+Each element in the JS Board contains the attribute of each card, namely: the image link, a unique identifier, rank and suit. 
+The position of the cards in the backend Javascript board is randomly generated everytime a new game is created.</br>
+Each DOM card has a click event listener, which contains all the logic that follows after the click i.e. checking if the cards match, removing cards when they match, checking win condition etc. 
+
+#### 
