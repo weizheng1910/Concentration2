@@ -48,7 +48,7 @@ var waitTime = 550;
 
 ```
 
- If I had not done this, I will have a troublesome time locating the stage1Timer variablee which is located on line 472 
+ If I had not done this, I will have a troublesome time locating the stage1Timer variable which is located on line 472 
 
 ``` javascript 
 function setTime(){
