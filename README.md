@@ -156,7 +156,7 @@ The side facing up is a `div` with `class='front'`, while the side facing down i
 Looking at the CSS, `class='front'` has a z-index of 2, meaning that it is on top of `class='back'`.</br>
 `class='back'` is transformed 180 degrees away, meaning that it is facing down(opposite of where `div` with `class='front'` is facing).</br>
 
-The CSS attribute `transform-style: preserve-3d` in `.flipper` allows the front and back div's 3d-position within the `.flipper` div to be preserved(i.e. `.front` being on top of `.back`), </br> such that a 180 degree rotation of `.flipper` along the y-axis will mimic the rotation of an actual flip, which will result in the `.back` side facing up after the flip(and `.front` side will face down).
+The CSS attribute `transform-style: preserve-3d` in `.flipper` allows the front and back div's 3d-position within the `.flipper` div to be preserved (i.e. `.front` being on top of `.back`), </br> such that a 180 degree rotation of `.flipper` along the y-axis will mimic the rotation of an actual flip, resulting in the `.back` side facing up after the flip(and `.front` side will face down).
 
 ```css
 .flipper {
