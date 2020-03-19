@@ -629,11 +629,11 @@ let populateBackImages = (n) => {
 }
 
 // Event listener. What happens upon clicking.
-function addEventListener() { 
-	var allCol = document.querySelectorAll('.col');
+let addEventListener = () => { 
+	let allCol = document.querySelectorAll('.col');
 
-	for(let i = 0; i < allCol.length; i++){
-		allCol[i].addEventListener('click',function(){		
+	for(const eachCol of allCol){
+		eachCol.addEventListener('click',function(){		
 
 			//Once you click, the timer starts
 			if(hasGameStarted == false){
@@ -641,48 +641,53 @@ function addEventListener() {
 				hasGameStarted = true;
 			} 
 
-			var r = this.id.charAt(4);
-			var c = this.id.charAt(5);
+			// Get the JSBoard position from the DOM id.
+			let r = this.id.charAt(4);
+			let c = this.id.charAt(5);
 
-			var theId = JSBoard[r][c];
+			// Get the unique identifier
+			let theId = JSBoard[r][c];
 
+			// Push it into the cardsInPlay array which verifies the match
 			cardsInPlay.push({
 				iden: theId,
 				locationid: r+c
 			});
 
-			//The below code is to prevent the bug of being able to flip the same card over and over again.
+			// The below code is to prevent the bug of being able to flip the same card over and over again.
+			// If both cards are from the same location, clear the cardsInPlay array
 			if(cardsInPlay.length == 2 && cardsInPlay[0].locationid == cardsInPlay[1].locationid){
 				var deletedCard = cardsInPlay.pop();
 				return;
 
+			// >= Is to cater to accidental clicks, you can click more than 2 times, but the cards
+			// won't be flipped over.
 			} else if(cardsInPlay.length >= 2){
 				//After two seconds, check if there is a match a respond accordingly. 
-				// ">=" is used so that the code continues to run even if there are accidental clicks
 				setTimeout(checkResult,WAITTIME,theId,r,c);	
 			}
 
 			//Prevents the third card from getting flipped over.
 			if(cardsInPlay.length < 3) {
+				// 'this' refers to the DOM element
 				this.classList.toggle('flipped');
 				flip.play();
 			}
-
 		})
 	}
 }
 
 //This function flips the card back if they are open
-function flipCardBack() {
-	var allCol = document.querySelectorAll('.col');
-	for(let i = 0; i<allCol.length; i++){
+let flipCardBack = () => {
+	let allCol = document.querySelectorAll('.col');
+	for(const currCol of allCol){
 		/* 
 		if(!(allCol[i].hasChildNodes())){
 		 	continue;
 		}
 		*/ 
-		if( allCol[i].classList.contains('flipped') === true ) {
-			allCol[i].classList.remove('flipped');
+		if( currCol.classList.contains('flipped') === true ) {
+			currCol.classList.remove('flipped');
 			flip.play();
 		}
 	}
