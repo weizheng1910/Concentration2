@@ -24,6 +24,10 @@
 
 */
 
+/*
+Only use const when the variable wont change.
+cards is re-assigned everytime it is shuffled thats why its declaration has to be let. 
+*/
 const STAGE1TIMER = 3;
 const STAGE2TIMER = 3;
 
@@ -34,7 +38,7 @@ const WAITTIME = 550;
 const pastScores = [];
 
 // An array of cards
-const cards = [
+let cards = [
 	{
 	id: 0,
 	suit: "clubs",
@@ -355,7 +359,7 @@ const flip = new sound("flip.mp3");
 
 // A temporary array which stores the selected matching pairs
 // before transferring them into the actual JS Board
-const tempArray = [];
+let tempArray = [];
 
 // Global variable which keeps track of the score 
 let score = 0;
@@ -382,10 +386,10 @@ const refreshCount = 5;
 // var shuffledCards;
 
 // JSBoard is the board in which the check for match will be done. 
-const JSBoard = [];
+let JSBoard = [];
 
 // An array to store the chosen cards to see if they match 
-const cardsInPlay = [];
+let cardsInPlay = [];
 
 // Global variable to keep track if the player wins or loses
 let winOrLose = "Lose"
@@ -475,7 +479,7 @@ let createDomElements = (n) => {
 	}
 };
 
-function setTime(){
+let setTime = () => {
 	if (stage == 1){
 		time = STAGE1TIMER;
 	} else if(stage == 2){
@@ -485,7 +489,7 @@ function setTime(){
 
 // In a 4 * 4 board , you need 4 * 4 / 2 matches to win
 // In a 6 * 6 board , you need 6 * 6 / 2 matches to win
-function setMatchesToWin(){
+let setMatchesToWin = () => {
 	if (stage == 1){
 		matchesToWin = (Math.pow(4,2)/2)
 	} else if(stage == 2){
@@ -493,7 +497,7 @@ function setMatchesToWin(){
 	}
 }
 
-function generateFullBoard(n){
+let generateFullBoard = (n) => {
 	// Clear JavaScript Board
 	JSBoard = [];
 	// Generate the HTML DOMs for the board
