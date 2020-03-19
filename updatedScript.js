@@ -28,8 +28,8 @@
 Only use const when the variable wont change.
 cards is re-assigned everytime it is shuffled thats why its declaration has to be let. 
 */
-const STAGE1TIMER = 3;
-const STAGE2TIMER = 3;
+const STAGE1TIMER = 90;
+const STAGE2TIMER = 180;
 
 // Lag time before card is flipped back 
 const WAITTIME = 550;
