@@ -1,15 +1,40 @@
+/*
+	Things I would do differently next time:
+		1. Make an effort to think of the most appropriate name for the variable
+		2. Modularisation: - abstracting out repetitive pieces of code into a function
+		3. Listing functions in order: as we read the code down the page, we shouldn't see a function which definition we havent seen the
+		   yet. 
+		4. Particularly for CSS: thoroughly understanding a code before using it. (Show code here)
+		5. Abstracting out the variables before so that it can be frequently tested. 
+		6. Thinking through your code and removing unnececessary code:
+			For example:
+				Game losing condition, you do not have to loop through (Show code here)
+		7. Learning and writing more efficient code - with less runtime.Instead of looping through the code. 
 
-var stage1Timer = 60;
-var stage2Timer = 90;
+	Things that went well: 
+		1. Listing variables on top and functions below.
+		2. Commenting on what each variable does. 
+		3. Plotting out what I am supposed to do with a piece of paper.
+		
+
+	Post Mortem:
+		Good. Keeping my mental workspace neat - closing unnecessary windows.
+		Bad. Not using Git Checkout and the VC Tool.
+		Bad. Do more commits.
+
+*/
+
+const STAGE1TIMER = 3;
+const STAGE2TIMER = 3;
 
 // Lag time before card is flipped back 
-var waitTime = 550;
+const WAITTIME = 550;
 
 // An array of object which have 
-var pastScores = [];
+const pastScores = [];
 
 // An array of cards
-var cards = [
+const cards = [
 	{
 	id: 0,
 	suit: "clubs",
@@ -325,45 +350,45 @@ var cards = [
 ]
 
 // Self-explanatory
-var ding = new sound("ding.mp3");
-var flip = new sound("flip.mp3");
+const ding = new sound("ding.mp3");
+const flip = new sound("flip.mp3");
 
 // A temporary array which stores the selected matching pairs
 // before transferring them into the actual JS Board
-var tempArray = [];
+const tempArray = [];
 
 // Global variable which keeps track of the score 
-var score = 0;
+let score = 0;
 
 // Global variable which keeps track of the time
-var time;
+let time;
 
 // Global variable which keeps track of the stage
-var stage;
+let stage;
 
 // Check if game has started, so that we only call 
 // the timer function once
-var hasGameStarted = false;
+let hasGameStarted = false;
   
 // Variable to store the number of matches needed to win 
-var matchesToWin;
+let matchesToWin;
 
 //Declared this timerInterval as a global variable so that we can use it in different functions.
-var timerInterval;
+let timerInterval;
 
 //Countdown to new Game
-var refreshCount = 5;
+const refreshCount = 5;
 
 // var shuffledCards;
 
 // JSBoard is the board in which the check for match will be done. 
-var JSBoard = [];
+const JSBoard = [];
 
 // An array to store the chosen cards to see if they match 
-var cardsInPlay = [];
+const cardsInPlay = [];
 
 // Global variable to keep track if the player wins or loses
-var winOrLose = "Lose"
+let winOrLose = "Lose"
 
 
 
@@ -446,12 +471,14 @@ function createDomElements(n) {
 
 function setTime(){
 	if (stage == 1){
-		time = stage1Timer;
+		time = STAGE1TIMER;
 	} else if(stage == 2){
-		time = stage2Timer;
+		time = STAGE2TIMER;
 	}
 }
 
+// In a 4 * 4 board , you need 4 * 4 / 2 matches to win
+// In a 6 * 6 board , you need 6 * 6 / 2 matches to win
 function setMatchesToWin(){
 	if (stage == 1){
 		matchesToWin = (Math.pow(4,2)/2)
@@ -512,7 +539,7 @@ function changeState(){
 				var record = document.createElement('li')
 				record.innerText = pastScores[i].name+" "+pastScores[i].yourScore
 				var mainBoard = document.querySelector('#mainBoard');
-				pastScore.appendChild(record)	
+				pastScore.appendChild(record)
 			}
 			break;
 
@@ -560,7 +587,7 @@ function populateBackImages(n){
 				
 		var currCol = allCol[i]
 
-		//Each "col" has an id which describes its position in the JSBoard array
+		//Each DOM element with the class "col" has an id which describes its position in the JSBoard array
 		//col-00 means JSBoard[0][0]
 		var r = currCol.id.charAt(4);
 		var c = currCol.id.charAt(5);
@@ -617,7 +644,7 @@ function addEventListener() {
 			} else if(cardsInPlay.length >= 2){
 				//After two seconds, check if there is a match a respond accordingly. 
 				// ">=" is used so that the code continues to run even if there are accidental clicks
-				setTimeout(checkResult,waitTime,theId,r,c);	
+				setTimeout(checkResult,WAITTIME,theId,r,c);	
 			}
 
 			//Prevents the third card from getting flipped over.
@@ -700,6 +727,8 @@ function clearCards(theId,r,c) {
 	var thisID = theId
 	delete JSBoard[r][c];
 	
+	// Go through every row in the JS Board to see if we can find a card with the same unique ID.
+	// Then identify the row and column of this card as rowOfMatchingID and colOfMatchingID respectively.
 	for(let i = 0; i < JSBoard.length; i++){
 		if(JSBoard[i].indexOf(thisID) >= 0) {
 			rowOfMatchingID = i;
