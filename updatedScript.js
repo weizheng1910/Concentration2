@@ -597,26 +597,27 @@ let transferStepTwo = (n) => {
 
 let populateBackImages = (n) => {
 	var allCol = document.querySelectorAll('.col');
-	for(let i = 0; i < allCol.length; i++){
-				
-		var currCol = allCol[i]
+	for(const currCol of allCol){
 
 		//Each DOM element with the class "col" has an id which describes its position in the JSBoard array
 		//col-00 means JSBoard[0][0]
-		var r = currCol.id.charAt(4);
-		var c = currCol.id.charAt(5);
+		let r = currCol.id.charAt(4);
+		let c = currCol.id.charAt(5);
 
-		var theId = JSBoard[r][c];
+		// Each card is represented by its unique number in the JSBoard
+		// E.g. 5 Hearts is represented by 29
+		let theId = JSBoard[r][c];
 
-		//Find the object which has theId as its id.
-		var imgObj = cards.find(x => x.id === theId);
+		// Find the card object in the cards array using the unique number
+		let imgObj = cards.find(x => x.id === theId);
 
-		//This is to get the faceup image of the card
+		// Get the image link of the card-face(the side which displays the nrank and suit)
+		// from the card object
+		let imgLink = imgObj.link
 
-		var imgLink = imgObj.link
-
-		var imgContainer = currCol.childNodes[0].childNodes[1];
-		var img = document.createElement('img')
+		// Create the image for the card-face with the image link.
+		let imgContainer = currCol.childNodes[0].childNodes[1];
+		let img = document.createElement('img')
 		img.setAttribute('src',imgLink);
 
 		if(n>5){
