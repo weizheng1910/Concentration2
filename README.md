@@ -90,7 +90,8 @@ function generateFullBoard(n){
 	hasGameStarted = false;		
 }
 ```
-2. State design pattern. I learnt this from a Youtube Tutorial on Flappy Bird which also tracks the game state using a similar method.
+#### State design pattern. 
+I learnt this from a Youtube Tutorial on Flappy Bird which also tracks the game state using a similar method.
 
 ``` javascript
 // Object which tracks the game state
