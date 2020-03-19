@@ -150,8 +150,12 @@ function changeState(){
   </div>
 </div>
 ```
-A card has a 2 sides. As the card is faced down during the game, the side facing up shows the logo and the side facing down shows the rank and suit. </br>
-The side facing up is a `div` with `class='front'`, while the side facing down is a `div` with `class='back'`. Both `div` are nested within the `.flipper` class.
+A card has a 2 sides. As the card is faced down during the game, </br>
+the side facing up shows the motif, </br> 
+and the side facing down shows the number and suit. </br>
+The side with the motif is contained within `div` with `class='front'`,</br>
+while the side showing the number and suit is contained with the `div` with `class='back'`. </br> 
+Both `div` are nested within the `.flipper` class.
 
 Looking at the CSS, `class='front'` has a z-index of 2, meaning that it is on top of `class='back'`.</br>
 `class='back'` is transformed 180 degrees away, meaning that it is facing down(opposite of where `div` with `class='front'` is facing).</br>
