@@ -713,7 +713,7 @@ let checkResult = (theId,r,c) => {
         generateFullBoard(6);
 
         // Display Timer with correct time
-        var timerDisplay = document.querySelector("#timerDisplay");
+        let timerDisplay = document.querySelector("#timerDisplay");
         timerDisplay.innerText = "Timer : "+time
 
       // If game has ended at game is at stage2
@@ -732,26 +732,27 @@ let checkResult = (theId,r,c) => {
   }
 
   // After verifying if a match has occured, update the score
-  var scoreDisplay = document.querySelector("#scoreDisplay");
+  let scoreDisplay = document.querySelector("#scoreDisplay");
   scoreDisplay.innerText = "Score: "+score
   // And reset the cardsInPlay array so we can check the next 2 cards.
   cardsInPlay.length = 0;
 }
 
-function clearCards(theId,r,c) {
+let clearCards = (theId,r,c) => {
   
   // The arguments: theId, r and c are the uniqueID, rowID and colID of
   // the first card respectively.
-  // Thi 
-  var rowOfMatchingID;
-  var colOfMatchingID;
+
+  let rowOfMatchingID;
+  let colOfMatchingID;
 
   // We need to keep track of the card
-  var thisID = theId
+  let thisID = theId
   delete JSBoard[r][c];
   
-  // Go through every row in the JS Board to see if we can find a card with the same unique ID.
+  // Go through every row in the JS Board to see if we can find the second card with the same unique ID.
   // Then identify the row and column of this card as rowOfMatchingID and colOfMatchingID respectively.
+  // *** Alternatively, we can identify the location of the two cards using locationid in the cardsInPlay array ***
   for(let i = 0; i < JSBoard.length; i++){
     if(JSBoard[i].indexOf(thisID) >= 0) {
       rowOfMatchingID = i;
@@ -760,8 +761,8 @@ function clearCards(theId,r,c) {
     }
   }
 
-  var firstCardToRemove = document.querySelector('#col-'+r+c);
-  var secondCardToRemove = document.querySelector('#col-'+rowOfMatchingID+colOfMatchingID);
+  let firstCardToRemove = document.querySelector('#col-'+r+c);
+  let secondCardToRemove = document.querySelector('#col-'+rowOfMatchingID+colOfMatchingID);
   
   firstCardToRemove.removeChild(firstCardToRemove.childNodes[0]);
   secondCardToRemove.removeChild(secondCardToRemove.childNodes[0]);
@@ -770,31 +771,35 @@ function clearCards(theId,r,c) {
   delete JSBoard[rowOfMatchingID][colOfMatchingID]
 }
 
-function showGameOverScreen(){
-  var mainBoard = document.querySelector('#mainBoard');
+let showGameOverScreen = () => {
+  // When the game is over
+  // Clear the game board
+  let mainBoard = document.querySelector('#mainBoard');
   mainBoard.innerHTML = "";
 
-  var gameStatement = document.createElement('p');
+  // Display prompt to enter name
+  let gameStatement = document.createElement('p');
   gameStatement.id = "gameStatement"
   gameStatement.innerText = "You "+winOrLose+".\n Your score is "+score+"\n Enter your name below to submit your score."
   mainBoard.appendChild(gameStatement)
 
-  
-  var nameInput = document.createElement('input');
+  // Display input field to enter name
+  let nameInput = document.createElement('input');
   nameInput.id = "nameInput"
   nameInput.setAttribute("type", "text");
-  nameInput.addEventListener('change',function(){
-    
-    var currentName = event.target.value;
+  nameInput.addEventListener('change',function(){  
+    // Upon entering name populate the highscore 
+    let currentName = event.target.value;
     pastScores.push({name: currentName, yourScore: score})
-    
+    // Display only 4 most recent scores, FIFO 
     if(pastScores.length >= 5){
       pastScores.shift()
     }
-
-    var mainBoard = document.querySelector('#mainBoard');
+    // Clear the prompt and input field after name has been submitted
+    let mainBoard = document.querySelector('#mainBoard');
     mainBoard.parentNode.removeChild(mainBoard);
     
+    // Change game state
     gameState.current = gameState.inGame;
     changeState();
   })
@@ -803,11 +808,11 @@ function showGameOverScreen(){
   mainBoard.appendChild(nameInput)
 }
 
-var timerStat = "off";
-// Declared the timeout function as a global variable so we can call it outside
-var timeoutFunction;
+let timerStat = "off";
+// Declared the timeout function as a global variable, so that we are able to stop the timeout function in line 830 clearTimeout(timeoutFunction)
+let timeoutFunction;
 
-function timer() {
+let timer = () => {
   
   // This if-else statement acts like a switch 
   // Call it once, it switches on, call it again it switches off
@@ -819,6 +824,7 @@ function timer() {
 
   // The code which would run depending on the timerStat variable
   if(timerStat == "off"){
+    // Stop the interval and timeout function
     clearInterval(timerInterval);
     clearTimeout(timeoutFunction);
   } else {
