@@ -131,3 +131,5 @@ function changeState(){
 }
 
 ```
+
+#### HTML DOM Manipulation
