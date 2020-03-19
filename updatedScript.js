@@ -390,8 +390,6 @@ const cardsInPlay = [];
 // Global variable to keep track if the player wins or loses
 let winOrLose = "Lose"
 
-
-
 //Sound effects
 function sound(src) {
   this.sound = document.createElement("audio");
@@ -408,14 +406,16 @@ function sound(src) {
   }
 }
 
-function createDomElements(n) {
+let createDomElements = (n) => {
 	//Make a main div to contain the board first
 	var mainBoard = document.createElement('div');
 	
+	// Add class and id to the main div
 	mainBoard.classList.add('mainblock')
 	mainBoard.classList.add('container');
 	mainBoard.id = "mainBoard";
 
+	// Create n rows in the DOM board
 	for(let i = 0; i < n; i++){
 		var row = document.createElement('div');
 		row.classList.add('row');
@@ -427,12 +427,14 @@ function createDomElements(n) {
 				row.style.height = "190px";
 			}
 			
-		//Within each row, create n col
+		// Within each row, create n col
 		for(let j = 0; j < n; j++){
+			// Add class and id
 			var col = document.createElement('div');
 			col.classList.add('col');
 			col.id = "col-"+i+j;
 
+			// Conditional rendering: if board has more than 5 rows, make each card smaller
 			if(n < 5) {
 				col.innerHTML = "<div class=\"flipper\"><div class=\"front\"><img src=\"Cards/cardBack_red5.png\"></img></div><div class=\"back\"></div></div>"
 				col.style.height = "190px"
@@ -441,15 +443,19 @@ function createDomElements(n) {
 				col.innerHTML = "<div class=\"flipper\"><div class=\"front\"><img height = \"100\" src=\"Cards/cardBack_red5.png\"></img></div><div class=\"back\"></div></div>"
 				col.style.height = "100px";
 				col.style.width = "73.68px"
-				}
+			}
 			
+			// Append each column into the row
 			row.appendChild(col);
 		}
+		// Append each row into the mainBoard
 		mainBoard.appendChild(row);
 	}
+
+	// Append the mainBoard into the Body
 	document.body.appendChild(mainBoard);
 
-	//Re-adjusts DOM sizes when number of squares is greater than 5
+	//Re-adjusts the size of the .flipper in each col, when number of squares is greater than 5
 	if (n > 5) {
 		var allFlipperDiv = document.querySelectorAll(".flipper")
 		var allFrontDiv = document.querySelectorAll(".front")
