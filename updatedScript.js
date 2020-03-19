@@ -561,8 +561,9 @@ let changeState = () => {
 }
 
 //Returns an array shuffled
-function shuffle(array) {
-	var shuffledArray = [], n = array.length, i;
+let shuffle = (array) => {
+	let shuffledArray = [], n = array.length, i;
+
 	while (n) {
 		//Randomly choses an integer between 0 to the number of cards remaining
 		i = Math.floor(Math.random()*array.length)
@@ -577,7 +578,7 @@ function shuffle(array) {
 	return shuffledArray;
 }
 
-function transferStepOne(n) {
+let transferStepOne = (n) => {
 	for(let i = 0; i < (Math.pow(n,2)/2) ; i++){
 		//Pushes a matching pair of cards
 		tempArray.push(cards[i].id);
@@ -585,14 +586,16 @@ function transferStepOne(n) {
 	}
 };
 
-function transferStepTwo(n) { 
+// Transforming JSBoard into an array of arrays
+let transferStepTwo = (n) => { 
 	while(tempArray.length) {
 	    JSBoard.push(tempArray.splice(0,n))
 	}
 	console.log(JSBoard)
 }
 
-function populateBackImages(n){
+
+let populateBackImages = (n) => {
 	var allCol = document.querySelectorAll('.col');
 	for(let i = 0; i < allCol.length; i++){
 				
