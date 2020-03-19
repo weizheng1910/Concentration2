@@ -62,7 +62,7 @@ function generateFullBoard(n){
 ```
 2. State design pattern. I learnt this from a Youtube Tutorial on Flappy Bird which also tracks the game state using a similar method.
 
-```
+``` javascript
 // Object which tracks the game state
 const gameState = {
 	current: 0,
