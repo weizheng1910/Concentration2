@@ -530,24 +530,25 @@ const gameState = {
 	endGame: 1
 }
 
+
 //Board generated from the start
-function changeState(){
+let changeState = () => {
 	switch(gameState.current){
 		case(0):
 			//Reset Global Variables
 			score = 0;
-			var scoreDisplay = document.querySelector("#scoreDisplay");
+			let scoreDisplay = document.querySelector("#scoreDisplay");
 			scoreDisplay.innerText = "Score: "+score
 
 			stage = 1;
 			generateFullBoard(4);
 			
 			//Populate past scores
-			var pastScore = document.querySelector('#PastScore');
+			let pastScore = document.querySelector('#PastScore');
 			pastScore.innerHTML = ""
-			for(let i = 0; i < pastScores.length; i++){
+			for(const eachScore of pastScores){
 				var record = document.createElement('li')
-				record.innerText = pastScores[i].name+" "+pastScores[i].yourScore
+				record.innerText = eachScore.name+" "+eachScore.yourScore
 				var mainBoard = document.querySelector('#mainBoard');
 				pastScore.appendChild(record)
 			}
