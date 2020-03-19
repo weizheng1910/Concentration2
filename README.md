@@ -139,4 +139,6 @@ function changeState(){
 * The position of the cards in the backend Javascript board is randomly generated everytime a new game is created.
 * Each DOM card has a click event listener, which contains all the logic that follows after the click i.e. checking if the cards match, removing cards when they match, checking win condition etc. 
 
-#### 
+## Conclusion
+
+Overall, this project familiarised me with the Javascript language and CSS.
