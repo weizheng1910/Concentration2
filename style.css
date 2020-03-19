@@ -85,8 +85,8 @@ h1, h2{
 }
 
 .col.flipped .flipper {
-        transform: rotateY(180deg);
-    }
+  transform: rotateY(180deg);
+}
 
 #gameOver, #gameStatement {
 	font-size: 40px;
