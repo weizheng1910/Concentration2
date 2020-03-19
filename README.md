@@ -3,7 +3,7 @@
 [Link to App](https://weizheng1910.github.io/Concentration/)
 
 ## Technologies
-CSS, Javascript
+CSS, Javascript ES6
 
 ## Brief overview
 Poker cards are lain face down in 4 rows, with 4 cards on each row. At every turn, the player flips over two poker cards. If it matches(same suit and rank), the cards are removed from the board.
