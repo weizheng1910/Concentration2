@@ -32,6 +32,71 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 ## Things I have learnt 
 
 1. Modularisation. Abstracting out variables frequently used. i.e. timer and lagtime so that the variables are applied at all the correct places after changing the variable at just one place.
+
+
+```
+function generateFullBoard(n){
+	// Clear JavaScript Board
+	JSBoard = [];
+	// Generate the HTML DOMs for the board
+	createDomElements(n);
+	// Add query selectors
+	addEventListener();
+	// Shuffle cards
+	cards = shuffle(cards);
+	// Choose the matching pairs
+	transferStepOne(n);
+	// Shuffle their position
+	tempArray = shuffle(tempArray);
+	// Make the board an n*n array 
+	transferStepTwo(n);
+	// Add in images of card when it is flipped over
+	populateBackImages(n);
+	// Define number of matches to win
+	setMatchesToWin();
+	// Set the time;
+	setTime();
+	// So that timer function will only be called on the first click
+	hasGameStarted = false;		
+}
+```
 2. State design pattern. I learnt this from a Youtube Tutorial on Flappy Bird which also tracks the game state using a similar method.
 
+```
+// Object which tracks the game state
+const gameState = {
+	current: 0,
+	inGame: 0,
+	endGame: 1
+}
 
+//Board generated from the start
+function changeState(){
+	switch(gameState.current){
+		case(0):
+			//Reset Global Variables
+			score = 0;
+			var scoreDisplay = document.querySelector("#scoreDisplay");
+			scoreDisplay.innerText = "Score: "+score
+
+			stage = 1;
+			generateFullBoard(4);
+			
+			//Populate past scores
+			var pastScore = document.querySelector('#PastScore');
+			pastScore.innerHTML = ""
+			for(let i = 0; i < pastScores.length; i++){
+				var record = document.createElement('li')
+				record.innerText = pastScores[i].name+" "+pastScores[i].yourScore
+				var mainBoard = document.querySelector('#mainBoard');
+				pastScore.appendChild(record)
+			}
+			break;
+
+		case(1):
+			showGameOverScreen();
+			break;
+	}
+}
+
+```
