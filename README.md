@@ -32,9 +32,9 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 ## Things I have learnt 
 
 1. Modularisation. Abstracting out variables frequently used.
-  * Timer and lagtime are made global variables so that changes can be easily implemented, facilitating the testing process.
-  If I wanted change the timer for stage1, all I have to do is to change the value for stage1Timer, which is conveniently located all the top of the script where all the global variables are. Same goes for the waitTime. If I had not done this, I will have a troublesome time locating the stage1Timer variable and the waitTime which is somewhere within the chunk of code.
-  
+  * Timer and lagtime are made global variables, which are located at the beginning of the script. This is so that changes can be easily implemented, facilitating the testing process.
+  If I wanted change the timer for stage1, all I have to do is to change the value for stage1Timer, which is conveniently located on Line 25(at the very top where the actual code starts after the comments). </br>
+    
  
 ``` javascript
 
@@ -46,7 +46,17 @@ var waitTime = 550;
 
 ```
 
+ If I had not done this, I will have a troublesome time locating the stage1Timer variablee which is located on line 472 
 
+``` javascript 
+function setTime(){
+	if (stage == 1){
+		time = stage1Timer;
+	} else if(stage == 2){
+		time = stage2Timer;
+	}
+}
+```
 
 
 
