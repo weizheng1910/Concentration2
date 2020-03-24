@@ -6,10 +6,9 @@
 CSS, Javascript ES6, code was revamped recently
 
 ## Brief overview
-Poker cards are lain face down in 4 rows, with 4 cards on each row. At every turn, the player flips over two poker cards. If it matches(same suit and rank), the cards are removed from the board.
-If it doesn't, the cards are flipped back. And the next turn begins. The player has to clear the board within the time limit given.
+Poker cards are lain face down in a 4 * 4 grid. The player flips over two poker cards. The cards are removed if they match, and flipped back if they don't. The player has to clear the board within the time limit given.
 
-After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly longer time limit given. 
+After the 4 * 4 is the 6 * 6 board, with a slightly longer time limit given. 
 
 ## Process 
 
@@ -36,7 +35,7 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 #### Modularisation. Abstracting out variables frequently used.
   * Timer and lagtime are made global variables, which are located at the beginning of the script, so that changes can be easily made, facilitating the testing process.
   
-  If stage1Timer has to be changed, I can easily locate the variable for stage1Timer on **Line 25**(at the very top of the script after the comments). </br>
+  If timer fo stage 1 has to be changed, I can easily locate the variable for stage1Timer on **Line 25**, which is at the very top of the script. </br>
     
  
 ``` javascript
