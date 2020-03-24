@@ -34,8 +34,9 @@ After the 4 * 4 board, the next and last level is the 6 * 6, with a slightly lon
 ## Things I have learnt 
 
 #### Modularisation. Abstracting out variables frequently used.
-  * Timer and lagtime are made global variables, which are located at the beginning of the script. This is so that changes can be easily implemented, facilitating the testing process.
-  If I wanted change the timer for stage1, all I have to do is to change the value for stage1Timer, which is conveniently located on Line 25(at the very top where the actual code starts after the comments). </br>
+  * Timer and lagtime are made global variables, which are located at the beginning of the script, so that changes can be easily made, facilitating the testing process.
+  
+  If stage1Timer has to be changed, I can easily locate the variable for stage1Timer on **Line 25**(at the very top of the script after the comments). </br>
     
  
 ``` javascript
@@ -48,7 +49,7 @@ var waitTime = 550;
 
 ```
 
- If I had not done this, I will have a troublesome time locating the stage1Timer variable which is located on line 472 
+ If I had not abstracted out the variable, I will have a troublesome time locating the actual variable at **line 472** 
 
 ``` javascript 
 function setTime(){
@@ -135,8 +136,9 @@ function changeState(){
 ```
 
 #### HTML DOM Manipulation
-* The cards are Document Object Models - they are created and removed by a function call. 
-* Every DOM card has an id which represents its position in the backend Javascript board, which is an array of arrays. e.g. an id of col-11 means that the card is in row 1, col 1 of the Javascript board.
+* The cards seen on the page are Document Object Models - they are created and removed by a function call. 
+* Every card has an id which identify its position in the backend Javascript board, represented as an array of arrays.</br>
+A card with an id of col-11 means that the card is in row 1, col 1 of the Javascript board.
 * Each element in the JS Board contains the attribute of each card, namely: the image link, a unique identifier, rank and suit. 
 * The position of the cards in the backend Javascript board is randomly generated everytime a new game is created.
 * Each DOM card has a click event listener, which contains all the logic that follows after the click i.e. checking if the cards match, removing cards when they match, checking win condition etc. 
