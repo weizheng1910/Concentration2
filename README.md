@@ -35,7 +35,7 @@ After the 4 * 4 is the 6 * 6 board, with a slightly longer time limit given.
 #### Modularisation. Abstracting out variables frequently used.
   * Timer and lagtime are made global variables, which are located at the beginning of the script, so that changes can be easily made, facilitating the testing process.
   
-  If timer fo stage 1 has to be changed, I can easily locate the variable for stage1Timer on **Line 25**, which is at the very top of the script. </br>
+  If timer fo stage 1 has to be changed, the variable for stage1Timer can be easily found on **Line 25**, at the top of the script. </br>
     
  
 ``` javascript
