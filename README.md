@@ -6,7 +6,7 @@
 CSS, Javascript ES6, code was revamped recently
 
 ## Brief overview
-Poker cards lie face down; 4 rows by 4 columns. The player flips over two poker cards. They are removed if they match, and flipped back if they don't. The player has to clear the board within the time limit given.
+Poker cards lie face down; 4 rows by 4 columns. The player flips over two poker cards. They are removed if they match; flipped back if they don't. The player has to clear the board within the time limit given.
 
 After the 4 * 4 is the 6 * 6 board, with a slightly longer time limit given. 
 
