@@ -1,5 +1,3 @@
-import { Timer } from "./Timer.js";
-import { Interface } from "./Interface.js";
 import BackendLogic from "./BackendLogic.js";
 
 class Main {
