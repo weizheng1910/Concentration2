@@ -233,7 +233,6 @@ export default class Interface {
   }
 
   displayCurrentScore(){
-    console.log('displayCurrentScore')
     let scoreDisplay = document.querySelector("#scoreDisplay");
     let score = this.main.getScore();
     scoreDisplay.innerText = "Score: "+ score;
@@ -243,7 +242,6 @@ export default class Interface {
     let pastScore = document.querySelector('#PastScore');
     pastScore.innerHTML = ""
     let pastScores = this.main.getPastScores();
-    console.log(pastScores)
     for(const eachScore of pastScores){
       let record = document.createElement('li')
       record.innerText = eachScore.name+" "+eachScore.score
